@@ -68,11 +68,26 @@ ssl_certificate /home/app/web/ssl_certs/fullchain1.pem;
 ssl_certificate_key /home/app/web/ssl_certs/privkey1.pem;
 ```
 and the location of your ssl certificates need to be added as a volume in the docker-compose file
-`      - /etc/letsencrypt/archive/your_site:/home/app/web/ssl_certs/
-`
+```
+      - /etc/letsencrypt/archive/your_site:/home/app/web/ssl_certs/
+```
 
 some example data is included. Comment out the relevant line in app/entrypoint.sh to avoid the import before running docker-compose.
 
 A `superuser` account should be created, either by first building the images using `docker-compose`, or by using `django-admin` in the entrypoint.sh file using the syntax described in the [django documentation](https://docs.djangoproject.com/en/3.0/ref/django-admin/#django-admin-createsuperuser)
 
 ```django-admin createsuperuser --no-input --username=admin --email admin@example.com --password <some password>```
+
+Finally, the docker environment variables need to be defined in homeInventory/project.env:
+```
+POSTGRES_USER=django
+POSTGRES_PASSWORD=<password here>
+POSTGRES_DB=project_db
+
+DATABASE=postgres
+DATABASE_HOST=postgresdb
+DATABASE_PORT=5432
+DOCKER=TRUE
+```
+
+This is used in the docker-compose build process to configure the password for the postgres database and in the django app for accessing the database
