@@ -1,0 +1,49 @@
+{% extends "inventory/base.html" %}
+{% block title %}Home Inventory - Edit Storage{% endblock %}
+{% block content %}
+
+{% if new_storage %}
+<h4>Edit storage</h4>
+{% else %}
+<h4>Edit storage</h4>
+{% endif %}
+<form enctype="multipart/form-data" method='post'>
+    {% csrf_token %}
+    <div class="table-responsive">
+    <table class="table table-responsive table-bordered">
+    {% for field in form %}
+    <tr>
+      {% if field.field.required %}
+      <th>
+          <label class="field-label{% if field.field.required %} field-required{% endif %}" for="{{ field.name }}">{{ field.label }}*</label>
+      </th>
+      {% else %}
+      <td>
+        <label class="field-label{% if field.field.required %} field-required{% endif %}" for="{{ field.name }}">{{ field.label }}</label>
+      </td>
+      {% endif %}
+      <td>
+          {% if field.errors %}
+            {% for e in field.errors %}
+            <div class="alert alert-danger error">{{ e }}</div>
+            {% endfor %}{% endif %}
+          {{ field }}<br/>
+          {% if field.help_text %}
+          <small class="form-text text-muted">{{ field.help_text|safe }}</small>
+
+          {% endif %}
+      </td>
+    </tr>
+  {% endfor %}
+    </table>
+    </div>
+    <input class="btn btn-primary" type="submit" value="Submit">
+</form>
+<script type="text/javascript">
+       $(function () {
+           // When the page has finished loading,
+           // autofocus on the username field
+           $('input#id_name').focus();
+       });
+</script>
+{% endblock %}

@@ -1,0 +1,56 @@
+{% extends "inventory/base.html" %}
+{% block title %}Home Inventory - Search Results{% endblock %}
+{% block content %}
+
+<style>
+
+  .imgbox {
+      display: grid;
+      height: 100%;
+  }
+  .center-fit {
+      max-width: 100%;
+      max-height: 100vh;
+      margin: auto;
+  }
+  tr, td, th {
+    border: 1px solid black;
+    border-collapse: collapse;
+    padding: 5px;
+
+  }
+
+</style>
+
+
+<a href="{% url 'inventory:index' %}">Home</a>
+<h3>Inventory List</h3>
+{% if object_list %}
+<table class="table-responsive">
+
+<tr>
+  <th class="text-center"><h4>Room</h4></th>
+  <th class="text-center"><h4>Storage Container</h4></th>
+  <th class="text-center"><h4>Item</h4></th></tr>
+  {% for item in object_list %}
+
+    <tr>
+      <td rowspan="{{room_row_span}}"><h5><a href="{% url 'inventory:room_detail' item.location.room.pk %}">{{ item.location.room.name }}</a></h5></td>
+      <td>{{item.location.name}}</td>
+      <td><a href="{% url 'inventory:item_detail' item.pk %}">{{ item.name }}</a></td>
+    </tr>
+
+
+
+  {% endfor %}
+</table>
+
+
+
+
+
+{% else %}
+
+<p>No results</p>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,110 @@
+{% load static %}
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/datepicker/1.0.10/datepicker.min.js" integrity="sha512-RCgrAvvoLpP7KVgTkTctrUdv7C6t7Un3p1iaoPr1++3pybCyCsCZZN7QEHMZTcJTmcJ7jzexTO+eFpHk4OCFAg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<html>
+<head>
+  <style>
+
+  </style>
+
+    <title>{% block title %}{% endblock %}</title>
+</head>
+<body>
+  {% if messages %}
+      {% for message in messages %}
+      {% if message.tags == "error" %}
+        <div class="alert alert-danger alert-dismissible show" id="ERROR"><button type="button" class="close" data-dismiss="alert">&times;</button><strong>{{ message }}</strong></div>
+      {% else %}
+      <div class="alert alert-{{ message.tags }} alert-dismissible fade show" id="UpdateAlert"><button type="button" class="close" data-dismiss="alert">&times;</button><strong>{{ message }}</strong></div>
+      {% endif %}
+      {% endfor %}
+
+  {% endif %}
+
+  <nav class="navbar navbar-expand-lg bg-dark navbar-dark">
+    <a class="navbar-brand" href="{% url 'inventory:index' %}">Home Inventory</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    {% if user.is_authenticated %}
+
+    <div class="collapse navbar-collapse" id="navbarText">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Items
+          </a>
+          <div class="dropdown-menu bg-dark" aria-labelledby="navbarDropdownMenuLink">
+            <a class="nav-link" href="{% url 'inventory:item_index' %}" id="allItems">All Items</a>
+            <a class="nav-link" href="{% url 'inventory:new_item' %}">Create New Item</a>
+          </div>
+        </li>
+
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Storage locations
+          </a>
+          <div class="dropdown-menu bg-dark" aria-labelledby="navbarDropdownMenuLink">
+            <a class="nav-link" href="{% url 'inventory:storage_index' %}" id="allStorage">All Storage Containers</a>
+            <a class="nav-link" href="{% url 'inventory:new_storage' %}">New Storage Container</a>
+            <a class="nav-link" href="{% url 'inventory:room_index' %}">List rooms</a>
+          </div>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Manage Inventory
+          </a>
+          <div class="dropdown-menu bg-dark" aria-labelledby="navbarDropdownMenuLink">
+            <a class="nav-link" href="{% url 'inventory:missing_list' %}">Missing Items</a>
+            <a class="nav-link" href="{% url 'inventory:reorder_list' %}">Reorder List</a>
+          </div>
+        </li>
+        {% if user.is_staff %}
+        <li class="nav-item" >
+          <a class="nav-link" href="{% url 'admin:index' %}" id="admin">Settings</a>
+        </li>
+        {% endif %}
+
+      </ul>
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item">{{ user.username }}</li>
+
+        <li class="nav-item"><a class="nav-link" href="{% url 'logout' %}" id="logout">Log out</a></li>
+      </ul>
+
+    </div>
+
+    {% endif %}
+
+  </nav>
+  {% block searchbar %}
+
+  {% if user.is_authenticated %}
+  <div style="padding-left: 40px; padding-right: 40px; padding-top: 20px;">
+    <form class="d-flex" action="{% url 'inventory:search_results' %}" method="get">
+      <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="q">
+
+      <button class="btn btn-success active" type="submit">Search</button>
+    </form>
+  </div>
+  {% endif %}
+  {% endblock %}
+  <div style="padding-left: 40px; padding-right: 40px">
+    {% block content %}
+    {% endblock %}
+  </div>
+</body>
+<script type="text/javascript">
+$( document ).ready(function() {
+$("#UpdateAlert").addClass('show')  //Shows Bootstrap alert
+$("#UpdateAlert").fadeTo(2000, 500).slideUp(500, function() {
+$("#UpdateAlert").slideUp(500);});
+});
+</script>
+</html>

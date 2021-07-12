@@ -1,0 +1,113 @@
+[
+{
+  "model": "inventory.room",
+  "pk": 1,
+    "fields": {
+    "name": "Test Room 1"
+  }
+},
+{
+  "model": "inventory.storage",
+  "pk": 1,
+  "fields": {
+    "name": "Test Drawer 1",
+    "room_id": 1
+  }
+},
+{
+  "model": "inventory.storage",
+  "pk": 2,
+  "fields": {
+    "name": "Test Drawer 2",
+    "room_id": 1
+  }
+},
+
+{
+  "model": "inventory.room",
+  "pk": 2,
+  "fields": {
+    "name": "Test Room 2"
+  }
+},
+{
+  "model": "inventory.item",
+  "pk": 1,
+  "fields" : {
+    "condition": "Good",
+    "image": null,
+    "last_seen": null,
+    "location_id": 1,
+    "missing": 0,
+    "missing_since": null,
+    "name": "test item #1",
+    "notes": "",
+    "par_value": 10,
+    "purchase_date": null,
+    "purchase_price": null,
+    "quantity": 5,
+    "serial_number": null,
+    "warranty_expire_date": null
+  }
+},
+{
+  "model": "inventory.item",
+  "pk": 2,
+  "fields" : {
+    "condition": "Good",
+    "image": "",
+    "last_seen": null,
+    "location_id": 1,
+    "missing": 0,
+    "missing_since": null,
+    "name": "test item #2",
+    "notes": "",
+    "par_value": 1,
+    "purchase_date": null,
+    "purchase_price": null,
+    "quantity": 6,
+    "serial_number": null,
+    "warranty_expire_date": null
+  }
+},
+{
+  "model": "inventory.item",
+  "pk": 3,
+  "fields" : {
+    "condition": "Good",
+    "image": "",
+    "last_seen": null,
+    "location_id": 2,
+    "missing": 0,
+    "missing_since": null,
+    "name": "Test Item #3",
+    "notes": "",
+    "par_value": 1,
+    "purchase_date": null,
+    "purchase_price": null,
+    "quantity": 1,
+    "serial_number": null,
+    "warranty_expire_date": null
+  }
+},
+{
+  "model": "inventory.item",
+  "pk": 4,
+  "fields" : {
+    "condition": "Good",
+    "image": "",
+    "last_seen": null,
+    "location_id": 2,
+    "missing": 0,
+    "missing_since": null,
+    "name": "Test Item #4",
+    "notes": "",
+    "par_value": 1,
+    "purchase_date": null,
+    "purchase_price": null,
+    "quantity": 1,
+    "serial_number": null,
+    "warranty_expire_date": null
+  }
+}
+]

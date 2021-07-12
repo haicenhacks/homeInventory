@@ -1,0 +1,95 @@
+{% extends "inventory/base.html" %}
+{% block title %}Home Inventory - {{storage}}{% endblock %}
+{% block content %}
+
+
+<h4>{{ storage.name }}
+{% if storage.description %}
+({{ storage.description }})
+{% endif %}
+</h4>
+
+<p><a href="{% url 'inventory:new_item_from_storage' storage_pk=storage.pk %}">Create New Item</a></p>
+<p><a href="{% url 'inventory:edit_storage' storage_pk=storage.pk %}">Edit Storage</a></p>
+
+{% if storage.item_set.all %}
+<div class="table-responsive">
+<table class="table table-responsive table-bordered">
+
+    <tr>
+      <th style="align-center;">Item</th>
+      <th style="align-center;">Status</th>
+    </tr>
+{% for item in storage.item_set.all %}
+
+
+  <tr>
+    <td>
+      <!-- <div style="padding-top: 5; padding-bottom: 5;"> -->
+    <a href="{% url 'inventory:item_detail' item.pk %}">{{ item.name }}</a>
+    </td>
+    <td>
+    <button type="button" class="presentbutton btn btn-outline-success btn-sm" autocomplete="off" id="present{{item.pk}}" data-catid="{{ item.pk }}" for=success-outlined> Present</button>
+    {% if item.missing%}
+    <button type="button" class="missingbutton btn btn-danger btn-sm" autocomplete="off" id="missing{{item.pk}}" data-catid="{{ item.pk }}" for=danger-outlined>Missing</button>
+    {% else %}
+    <button type="button" class="missingbutton btn btn-outline-danger btn-sm" autocomplete="off" id="missing{{item.pk}}" data-catid="{{ item.pk }}" for=danger-outlined>Missing</button>
+    {% endif %}
+    </td>
+
+  <!--</div>-->
+
+{% endfor %}
+</table>
+</div>
+
+<script type="text/javascript">
+  var token = '{{ csrf_token }}';
+  $('.missingbutton').click(function(){
+    console.log("missing item clicked")
+  var id;
+  id = $(this).attr("data-catid");
+  $.ajax(
+  {
+    headers: { "X-CSRFToken": token },
+      type:"POST",
+      data:{
+         pk: id,
+      },
+      url: "{% url 'inventory:report_item_missing'%}",
+
+  success: function( data )
+  {
+    $( '#missing'+ id ).removeClass('btn-outline-danger');
+    $( '#missing'+ id ).addClass('btn-danger');
+    $( '#present'+ id ).removeClass('btn-success');
+    $( '#present'+ id ).addClass('btn-outline-success'); } }) });
+
+  $('.presentbutton').click(function(){
+  var id;
+
+  id = $(this).attr("data-catid");
+  console.log("button clicked")
+  $.ajax(
+  {
+    headers: { "X-CSRFToken": token },
+
+      type:"POST",
+      data:{
+         pk: id,
+      },
+      url: "{% url 'inventory:confirm_item_location'%}",
+
+  success: function( data )
+  {
+      $( '#present'+ id ).removeClass('btn-outline-success');
+      $( '#present'+ id ).addClass('btn-success');
+      $( '#missing'+ id ).addClass('btn-outline-danger');
+      $( '#missing'+ id ).removeClass('btn-danger'); } }) });
+
+</script>
+
+{% else %}
+<p>Storage has no items</p>
+{% endif %}
+{% endblock %}

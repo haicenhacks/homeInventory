@@ -1,0 +1,14 @@
+{% extends "inventory/base.html" %}
+{% block title %}Home Inventory - New Item{% endblock %}
+{% block content %}
+<a href="{% url 'inventory:index' %}">Home</a>
+<h1>Create new item</h1>
+
+<form method='post'>
+    {% csrf_token %}
+    <table class="table-responsive">
+    {{form.as_table}}
+    </table>
+    <input class="btn btn-primary" type="submit" value="Submit">
+</form>
+{% endblock %}

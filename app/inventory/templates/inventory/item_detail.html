@@ -1,0 +1,222 @@
+{% extends "inventory/base.html" %}
+{% block title %}Home Inventory - {{ item.name }}{% endblock %}
+{% block content %}
+<style>
+
+        .imgbox {
+            display: grid;
+            height: 100%;
+        }
+        .center-fit {
+            max-width: 100%;
+            max-height: 100vh;
+            margin: auto;
+        }
+        tr, td, th {
+          border: 1px solid black;
+          border-collapse: collapse;
+          margin: 5;
+          padding: 5;
+
+        }
+    </style>
+    <script>
+          $(function() {
+              $( "#id_date" ).datepicker({minDate : 0});
+          });
+
+});
+          </script>
+<h3>{{ item.name }}</h3> <a href="{% url 'inventory:item_edit' pk=item.pk %}">Edit item</a>
+<div class="table-responsive">
+<table class="table table-responsive table-bordered">
+  <tr>
+    <th>Assigned Location</th>
+    <td><a href="{% url 'inventory:storage_detail' item.location.pk %}">{{ item.location }}</a></td>
+  </tr>
+  <tr>
+    <th>New Location</th>
+    <td>
+      <select class="form-select form-select-sm mb-3" aria-label=".form-select-sm aaa" id="update_select{{ item.pk }}">
+    {% for bin in all_storage_locs %}
+      {% if bin.pk == item.location.pk %}
+      <option selected value="{{ bin.pk }}">{{ bin.name }}</option>
+      {% else %}
+      <option value="{{ bin.pk }}">{{ bin.name }}</option>
+      {% endif %}
+    {% endfor %}
+  </select>
+  <div class="d-grid gap-2">
+  <button type="button" class="updatebutton btn btn-outline-primary btn-sm" autocomplete="off" id="update{{ item.pk }}" data-catid="{{ item.pk }}" for=primary-outlined> Update Location</button>
+  </div>
+  </td>
+  </tr>
+  <tr>
+    <th>Quantity</th>
+    <td>
+      <div class="input-group">
+        <span class="input-group-btn">
+          <button type="button" class="quantity-left-minus btn btn-danger btn-number"  data-type="minus" data-field="" id="qty_dec">
+            <span class="glyphicon glyphicon-minus">-</span>
+          </button>
+        </span>
+        <input type="text" id="quantity" name="quantity" class="form-control input-number" value="{{ item.quantity }}" min="1" max="100" style="max-width: 60px;">
+        <span class="input-group-btn">
+          <button type="button" class="quantity-right-plus btn btn-success" data-type="plus" data-field="" id="qty_inc">
+            <span class="glyphicon glyphicon-plus">+</span>
+          </button>
+        </span>
+        <span class="input-group-btn">
+          <button type="button" class="quantity-right-update btn btn-primary" data-type="plus" data-field="" id="qty_set" data-catid="{{ item.pk }}">
+            <span class="glyphicon glyphicon-plus">Update Quantity</span>
+          </button>
+        </span>
+      </div>
+    </td>
+  </tr>
+  <tr>
+    <th>Purchase Date</th>
+    <td>{{ item.purchase_date }}</td>
+  </tr>
+  <tr>
+    <th>Item manager</th>
+    <td>{{ item.manager }}</td>
+  </tr>
+  <tr>
+    <th>Warranty Expiration</th>
+    <td>{{ item.warranty_expire_date }}</td>
+  </tr>
+  <tr>
+    <th>Serial Number</th>
+    <td>{{ item.serial_number }}</td>
+  </tr>
+  <tr>
+    <th>Notes</th>
+    <td>{{ item.notes }}</td>
+  </tr>
+  {% if item.image %}
+  <tr>
+    <th>Image</th>
+    <td><img src="{{ item.image.url }}" class="img-fluid center-fit"></td>
+  </tr>
+  {% endif %}
+  {% if docs %}
+  <tr>
+    <th>Documents</th>
+
+    <td>
+
+        {% for dtype in doctypes %}
+          <h5>{{ dtype }}</h5>
+          <ul>
+          {% for d in docs %}
+            {% if d.type == dtype %}
+              {% if d.displayName %}
+              <li><a href="/media/{{ d.file }}">{{ d.displayName }}</a></li>
+              {% else %}
+              <li><a href="/media/{{ d.file }}">{{ d.file }}</a></li>
+              {% endif %}
+            {% endif %}
+          {% endfor %}
+          </ul>
+        {% endfor %}
+    </td>
+  </tr>
+  {%endif%}
+</table>
+</div>
+
+<script type="text/javascript">
+  var token = '{{ csrf_token }}';
+
+
+$('#qty_set').click(function(){
+  var id;
+
+  id = $(this).attr("data-catid");
+  qty = $("#quantity").val()
+  console.log("item id: "+id)
+  console.log("new_qty: "+qty)
+  console.log("set qty clicked")
+  $.ajax(
+    {
+      headers: { "X-CSRFToken": token },
+      type:"POST",
+      url: "{% url 'inventory:update_item_quantity' %}",
+      data:{
+         item_id: id,
+         new_qty: qty
+},
+      success: function( data )
+      {
+        location.reload(true);
+        console.log("reload");
+
+        //$("body").prepend('<div class="alert alert-success alert-dismissible fade show" id="buttonAlert"><button type="button" class="close" data-dismiss="alert">&times;</button><strong>Success!</strong> This alert box could indicate a successful or positive action.</div>');
+        //$("#buttonAlert").addClass('show')  //Shows Bootstrap alert
+        //$("#buttonAlert").fadeTo(2000, 500).slideUp(500, function() {
+        //$("buttonAlert").slideUp(500);});
+      }
+     })
+
+   });
+
+
+   $('#qty_inc').click(function(){
+     var id;
+
+     id = {{ item.pk }}
+     qty = $("#quantity").val()
+     qty =  Number(qty) + 1
+     $("#quantity").val(qty);
+     console.log("item id: " + id)
+     console.log("qty: " + qty)
+     console.log("button clicked")
+
+
+      });
+
+      $('#qty_dec').click(function(){
+        var id;
+
+        id = {{ item.pk }}
+        qty = $("#quantity").val()
+        qty =  Number(qty) - 1
+        $("#quantity").val(qty);
+        console.log("item id: " + id)
+        console.log("qty: " + qty)
+        console.log("button clicked")
+
+
+         });
+
+         $('.updatebutton').click(function(){
+           var id;
+
+           id = $(this).attr("data-catid");
+           loc_id = $("#update_select" + id).val()
+           console.log("item id: "+id)
+           console.log("loc id: "+loc_id)
+           console.log("button clicked")
+           $.ajax(
+             {
+               headers: { "X-CSRFToken": token },
+
+               type:"POST",
+               url: "{% url 'inventory:update_item_location' %}",
+               data:{
+                  item_id: id,
+                  new_loc_id: loc_id
+         },
+               success: function( data )
+               {
+                 $( '#updatebutton'+ id ).removeClass('btn-outline-success');
+                 $( '#updatebutton'+ id ).addClass('btn-success');
+                 location.reload();
+               }
+              })
+            });
+
+</script>
+
+{% endblock %}

@@ -1,0 +1,20 @@
+{% extends "inventory/base.html" %}
+{% block title %}Home Inventory{% endblock %}
+{% block content %}
+{% if user.is_authenticated %}
+
+  <h3>All Rooms</h3>
+  {% if rooms %}
+      <ul>
+      {% for room in rooms %}
+          <li><a href="{% url 'inventory:room_detail' room.id %}">{{ room.name }}</a></li>
+      {% endfor %}
+      </ul>
+  {% else %}
+      <p>No rooms are available.</p>
+  {% endif %}
+{% else %}
+  <h3>Welcome to Home Inventory</h3>
+  <p>Please <a href="{% url 'login' %}">log in</a> to view or edit your inventory</p>
+{% endif %}
+{% endblock %}

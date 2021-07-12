@@ -1,0 +1,78 @@
+{% extends "inventory/base.html" %}
+{% block title %}Home Inventory - Missing Items{% endblock %}
+{% block content %}
+<style>
+  tr, td, th {
+    border: 1px solid black;
+    border-collapse: collapse;
+    padding: 5px;
+    vertical-align: middle;
+  }
+</style>
+
+<h3>Items reported missing</h3>
+{% if item_qs %}
+<div class="table-responsive">
+<table class="table table-responsive table-bordered">
+  <tr>
+    <th>Item</th>
+    <th>Assigned Location</th>
+    <th>Found Location</th>
+    <th>Action</th>
+  </tr>
+{% for item in item_qs %}
+
+<tr id="{{ item.pk }}">
+  <td><a href="{% url 'inventory:item_detail' item.pk %}">{{ item.name }}</a></td>
+  <td>{{ item.location }}</td>
+  <td>
+    <div style="padding-top: 16px">
+    <select class="form-select form-select-sm mb-3" aria-label=".form-select-sm aaa" id="update_select{{ item.pk }}">
+      {% for bin in all_storage_locs %}
+        <option value="{{ bin.pk }}">{{ bin.name }}</option>
+
+      {% endfor %}
+    </select>
+
+    </div>
+    </td>
+    <td>
+    <button type="button" class="updatebutton btn btn-outline-primary btn-sm" autocomplete="off" id="update{{item.pk}}" data-catid="{{ item.pk }}" for=primary-outlined> Update Location</button>
+
+    </td>
+  </tr>
+
+{% endfor %}
+
+</table>
+</div>
+<script type="text/javascript">
+$('.updatebutton').click(function(){
+  var id;
+
+  id = $(this).attr("data-catid");
+  loc_id = $("#update_select" + id).val()
+  console.log("item id: "+id)
+  console.log("loc id: "+loc_id)
+  console.log("button clicked")
+  $.ajax(
+    {
+      type:"POST",
+      url: "/inventory/item/update_location/"+id,
+      data:{
+         item_id: id,
+         new_loc_id: loc_id
+},
+      success: function( data )
+      {
+        $( '#updatebutton'+ id ).removeClass('btn-outline-success');
+        $( '#updatebutton'+ id ).addClass('btn-success');
+      }
+     })
+   });
+
+</script>
+{% else %}
+<p>No items in missing</p>
+{% endif %}
+{% endblock %}

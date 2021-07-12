@@ -1,0 +1,15 @@
+{% extends "inventory/base.html" %}
+{% block title %}Home Inventory - All rooms{% endblock %}
+{% block content %}
+
+<h3>All rooms</h3>
+{% if rooms %}
+<ul>
+{% for room in rooms %}
+<li><a href="{% url 'inventory:room_detail' room.pk %}">{{ room.name }}</a></li>
+{% endfor %}
+</ul>
+{% else %}
+<p>No rooms exist.</p>
+{% endif %}
+{% endblock %}

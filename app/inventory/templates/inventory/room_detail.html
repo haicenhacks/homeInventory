@@ -1,0 +1,25 @@
+{% extends "inventory/base.html" %}
+{% block title %}Home Inventory - {{ room.name }}{% endblock %}
+{% block content %}
+
+<h3>Storage containers in {{ room.name }}</h3>
+<a href="{% url 'inventory:new_storage_from_room' room_pk=room.pk %}">Create new container</a>
+{% if room.storage_set.all %}
+<ul>
+  {% for obj in storage_items %}
+{#{% for storage in room.storage_set.all %}#}
+<li><a href="{% url 'inventory:storage_detail' obj.0.pk %}">{{ obj.0.name }}</a>
+  {% if obj.0.description %}
+  {{ obj.0.description }}
+  {% endif %}
+  {% if obj.1.0.name %}
+  ({% for item in obj.1 %}{{ item.name }}, {%endfor%} etc.)
+{% endif %}
+</li>
+{# <li><a href="{% url 'inventory:storage_detail' storage.pk %}">{{ storage.name }}</a></li> #}
+{% endfor %}
+</ul>
+{% else %}
+<p>Room has no storage locations</p>
+{% endif %}
+{% endblock %}

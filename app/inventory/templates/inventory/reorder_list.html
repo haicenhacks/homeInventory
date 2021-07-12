@@ -1,0 +1,114 @@
+{% extends "inventory/base.html" %}
+{% block title %}Home Inventory - Reorder List{% endblock %}
+{% block content %}
+<style>
+  tr, td, th {
+    border: 1px solid black;
+    border-collapse: collapse;
+    padding: 5px;
+    vertical-align: middle;
+  }
+</style>
+
+<h3>Items to be reordered</h3>
+
+{% if item_qs %}
+<div class="table-responsive">
+
+  <table class="table table-responsive table-bordered">
+    <tr>
+      <th>Item</th>
+      <th>Par Value</th>
+      <th>Quantity</th>
+    </tr>
+
+  {% for item in item_qs %}
+    <tr>
+      <td class="align-middle">{{ item.name }}</td>
+      <td class="align-middle">{{ item.par_value }}</td>
+      <td>
+        <div class="input-group">
+          <span class="input-group-btn">
+            <button type="button" class="quantity-left-minus btn btn-danger btn-number"  data-type="minus" data-field="" id="item_qty_dec">
+              <span class="glyphicon glyphicon-minus">-</span>
+            </button>
+          </span>
+          <input type="text" id="quantity" name="quantity" class="form-control input-number" value="{{ item.quantity }}" min="1" max="100">
+          <span class="input-group-btn">
+            <button type="button" class="quantity-right-plus btn btn-success" data-type="plus" data-field="" id="item_qty_inc">
+              <span class="glyphicon glyphicon-plus">+</span>
+            </button>
+          </span>
+          <span class="input-group-btn">
+            <button type="button" class="quantity-right-update btn btn-primary" data-type="plus" data-field="" id="item_qty_set" data-catid="{{ item.pk }}" style="margin-left: 5px;">
+              <span class="glyphicon glyphicon-plus">Update Quantity</span>
+            </button>
+          </span>
+        </div>
+      </td>
+      </tr>
+  {% endfor %}
+
+</table>
+<script type="text/javascript">
+$('#qty_set').click(function(){
+  var id;
+
+  id = $(this).attr("data-catid");
+  qty = $("#quantity").val()
+  //console.log("item id: "+id)
+  //console.log("loc id: "+loc_id)
+  console.log("button clicked")
+  $.ajax(
+    {
+      type:"POST",
+      url: "/inventory/item/update_qty/"+id,
+      data:{
+         item_id: id,
+         new_qty: qty
+       },
+      success: function( data )
+      {
+
+        $("body").prepend('<div class="alert alert-success alert-dismissible fade show" id="buttonAlert"><button type="button" class="close" data-dismiss="alert">&times;</button><strong>Quantity Updated</strong> </div>');
+        $("#buttonAlert").addClass('show')  //Shows Bootstrap alert
+        $("#buttonAlert").fadeTo(2000, 500).slideUp(500, function() {
+        $("#buttonAlert").slideUp(500);});
+      }
+     })
+
+   });
+
+
+   $('#qty_inc').click(function(){
+     var id;
+
+     id = {{ item.pk }}
+     qty = $("#quantity").val()
+     qty =  Number(qty) + 1
+     $("#quantity").val(qty);
+     console.log("item id: " + id)
+     console.log("qty: " + qty)
+     console.log("button clicked")
+
+
+      });
+
+      $('#qty_dec').click(function(){
+        var id;
+
+        id = {{ item.pk }}
+        qty = $("#quantity").val()
+        qty =  Number(qty) - 1
+        $("#quantity").val(qty);
+        console.log("item id: " + id)
+        console.log("qty: " + qty)
+        console.log("button clicked")
+
+
+         });
+</script>
+{% else %}
+<p>No items are below their set par value</p>
+{% endif %}
+{% endblock %}
