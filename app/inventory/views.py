@@ -296,7 +296,7 @@ class SearchResultsView(generic.ListView):
     def get_queryset(self):
         """Return sorted queryset of items matching search criteria."""
         query = self.request.GET.get("q")
-        item_list = Item.objects.filter(name__icontains=query)
+        item_list = Item.objects.filter(Q(name__icontains=query) | Q(asset_tag=query))
         item_list.group_by = ["location", "location.room"]
         qs = sorted(item_list,
                     key=lambda instance: instance.location.name,
