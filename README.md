@@ -2,6 +2,13 @@
 ## About
 This project grew out of some needs I had in my home. I have many small parts for my various electronics projects, often scattered across many boxes/bins. My overall goal was to spend less time searching boxes and trying to remember "where did I put that widget 3 years ago?".
 
+## Screenshots
+
+Desktop version
+![Desktop version](https://github.com/haicenhacks/homeInventory/blob/main/inventory_item_detail_desktop.png?raw=true)
+
+Mobile version
+![Mobile version](https://github.com/haicenhacks/homeInventory/blob/main/inventory_item_detail_mobile.png?raw=true)
 ## The data models
 
 ### Rooms
