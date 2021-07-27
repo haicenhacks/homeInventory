@@ -43,3 +43,7 @@ volumes:
   postgres-data:
   staticfiles:
   mediafiles:
+networks:
+  default:
+    external:
+      name: nginxproxymanager_default
