@@ -16,7 +16,7 @@ services:
     container_name: django_homeInventory
     build: app/
     command: >
-      gunicorn home.wsgi:application --bind 0.0.0.0:8000 --workers=4
+      bash -c "python3 manage.py makemigrations && python3 manage.py migrate && python3 manage.py collectstatic --no-input && gunicorn home.wsgi:application --bind 0.0.0.0:8000 --workers=4"
     env_file:
       - project.env
     expose:
@@ -28,10 +28,10 @@ services:
       - mediafiles:/home/app/web/mediafiles
   nginx:
     container_name: nginx_homeInventory
-    image: nginx:mainline-alpine
+    build: ./nginx
     restart: always
     ports:
-      - 1337:80
+      - 8000:80
 
     volumes:
       - ./nginx:/etc/nginx/conf.d
