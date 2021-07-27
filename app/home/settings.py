@@ -142,13 +142,10 @@ STATIC_URL = os.environ.get('STATIC_URL', default='/static/')
 STATIC_ROOT = os.path.join(BASE_DIR, os.environ.get('STATIC_ROOT', default='static'))
 
 
-MEDIA_URL = os.environ.get('MEDIA_URL', default='/media/')
-MEDIA_ROOT = os.path.join(BASE_DIR, os.environ.get('MEDIA_ROOT', default='media'))
-
-#MEDIA_URL = '/media/'
+MEDIA_URL = '/media/'
 
 # Path where media is stored
-#MEDIA_ROOT = os.path.join(BASE_DIR, 'mediafiles')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'mediafiles')
 # STATICFILES_DIRS = ('home/static', )
 
 
