@@ -128,7 +128,7 @@ class Item(models.Model):
 
 class Document(models.Model):
     item = models.ForeignKey(Item, on_delete=models.CASCADE)
-    file = models.FileField(upload_to="media/docs/", blank=True, null=True)
+    file = models.FileField(upload_to="docs/", blank=True, null=True)
     type = models.CharField(max_length=200, choices=DOCTYPE_CHOICES, default="User Manual")
     displayName = models.CharField("Display Name", max_length=200, blank=True, null=True)
 

@@ -28,4 +28,4 @@ RUN chown -R app:app $APP_HOME
 USER app:app
 RUN python manage.py collectstatic --noinput
 
-CMD gunicorn project.wsgi:application --bind 0.0.0.0:8000
+CMD gunicorn home.wsgi:application --bind 0.0.0.0:8000
