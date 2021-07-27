@@ -26,5 +26,6 @@ COPY . $APP_HOME
 RUN chown -R app:app $APP_HOME
 
 USER app:app
+RUN python manage.py collectstatic --noinput
 
-ENTRYPOINT ["/home/app/web/entrypoint.sh"]
+CMD gunicorn project.wsgi:application --bind 0.0.0.0:8000
