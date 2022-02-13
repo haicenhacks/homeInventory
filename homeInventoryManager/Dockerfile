@@ -29,4 +29,4 @@ USER app:app
 RUN pip freeze > $APP_HOME/staticfiles/d_requirements.txt
 RUN python manage.py collectstatic --noinput
 CMD py.test
-#CMD gunicorn home.wsgi:application --bind 0.0.0.0:8000
+CMD gunicorn home.wsgi:application --bind 0.0.0.0:8000
