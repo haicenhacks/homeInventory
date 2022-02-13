@@ -12,7 +12,7 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 import os
 # from pathlib import Path
 import sys
-from .keyconfig import Database, Secrets
+from home.keyconfig import Database, Secrets
 TESTING = 'test' in sys.argv
 
 if TESTING:

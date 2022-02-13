@@ -1,4 +1,4 @@
-version: '3'
+version: '3.9'
 
 services:
   db:
@@ -14,7 +14,7 @@ services:
 
   webhi:
     container_name: django_homeInventory
-    build: app/
+    build: homeInventoryManager/
     command: >
       bash -c "python3 manage.py makemigrations && python3 manage.py migrate && python3 manage.py collectstatic --no-input && gunicorn home.wsgi:application --bind 0.0.0.0:8000 --workers=4"
     env_file:

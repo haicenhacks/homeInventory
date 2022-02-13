@@ -1,0 +1,16 @@
+*.db
+static/vendor/*
+media/vendor/*
+*.pyc
+bootstrap-5.0.1-dist/*
+*.sqlite3
+docker_setup.py
+setup.sh
+pw
+labManager/mediafiles/*
+labManager/staticfiles/*
+labManager/media/*
+labManager/static/*
+labManager/.coverage
+labManager/*/keyconfig.py
+project.env
