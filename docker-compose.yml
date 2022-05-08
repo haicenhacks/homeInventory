@@ -3,7 +3,7 @@ version: '3.3'
 services:
   db:
     container_name: postgresdb_homeInventory
-    image: postgres:latest
+    image: postgres:13
     restart: always
     env_file:
       - project.env
