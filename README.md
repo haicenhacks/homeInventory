@@ -1,3 +1,5 @@
+Status as of June 29, 2022: There are multiple issues. Migrations are not being correctly applied in the docker image. I do not currently have time to investigate. This was the first project I made with django, and I haven't really done much with it since. 
+
 # Home Inventory
 ## About
 This project grew out of some needs I had in my home. I have many small parts for my various electronics projects, often scattered across many boxes/bins. My overall goal was to spend less time searching boxes and trying to remember "where did I put that widget 3 years ago?".
