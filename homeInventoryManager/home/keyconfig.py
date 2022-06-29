@@ -10,7 +10,4 @@ class Database:
 
 
 class Secrets:
-    if not os.getenv('DOCKER'):
-        SECRET_KEY = "JlJCzokOhn41JrQEaWGwX7pkvBpSC8JcZ-uZar97prg"
-    else:
-        SECRET_KEY = os.getenv('DJANGO_SECRET_KEY')
+    SECRET_KEY = os.getenv('DJANGO_SECRET_KEY')
