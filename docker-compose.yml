@@ -1,19 +1,8 @@
 version: '3.3'
 
 services:
-  db:
-    container_name: postgresdb_homeInventory
-    image: postgres:13
-    restart: always
-    env_file:
-      - project.env
-    expose:
-      - 5432
-    volumes:
-      - postgres-data:/var/lib/postgresql/data
-
-  webhi:
-    container_name: django_homeInventory
+  webhisq:
+    container_name: django_homeInventorysq
     build: homeInventoryManager/
     command: >
       bash -c "python3 manage.py makemigrations && python3 manage.py migrate && python3 manage.py collectstatic --no-input && gunicorn home.wsgi:application --bind 0.0.0.0:8000 --workers=4"
@@ -21,13 +10,11 @@ services:
       - project.env
     expose:
       - 8000
-    depends_on:
-      - db
     volumes:
       - staticfiles:/home/app/web/staticfiles
       - mediafiles:/home/app/web/mediafiles
-  nginx:
-    container_name: nginx_homeInventory
+  nginxsq:
+    container_name: nginx_homeInventorysq
     build: ./nginx
     restart: always
     expose:
@@ -38,9 +25,8 @@ services:
       - staticfiles:/home/app/web/staticfiles/
       - mediafiles:/home/app/web/mediafiles/
     depends_on:
-      - webhi
+      - webhisq
 volumes:
-  postgres-data:
   staticfiles:
   mediafiles:
 networks:
