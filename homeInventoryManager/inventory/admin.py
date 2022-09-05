@@ -3,7 +3,6 @@ from django.contrib import admin
 # Register your models here.
 from .models import Room, Storage, Item, Document, CustomUser
 
-
 class DocumentInlineAdmin(admin.StackedInline):
     model = Document
     extra = 1
@@ -12,7 +11,7 @@ class DocumentInlineAdmin(admin.StackedInline):
 class ItemAdmin(admin.ModelAdmin):
     model = Item
     list_display = ("name", "location", "quantity", "asset_tag")
-    list_filter = ["location__room", "location__name", "missing", "purchase_date"]
+    list_filter = ["location__room", "location__name", "missing", "purchase_date", ('image', admin.EmptyFieldListFilter)]
     search_fields = ["name", "asset_tag", "id"]
     inlines = [DocumentInlineAdmin]
 
