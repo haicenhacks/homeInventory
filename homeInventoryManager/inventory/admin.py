@@ -11,9 +11,9 @@ class DocumentInlineAdmin(admin.StackedInline):
 
 class ItemAdmin(admin.ModelAdmin):
     model = Item
-    list_display = ("name", "location", "quantity")
-    list_filter = ["location__room", "location__name", "missing", "purchase_date", "asset_tag"]
-    search_fields = ["name", "asset_tag"]
+    list_display = ("name", "location", "quantity", "asset_tag")
+    list_filter = ["location__room", "location__name", "missing", "purchase_date"]
+    search_fields = ["name", "asset_tag", "id"]
     inlines = [DocumentInlineAdmin]
 
 

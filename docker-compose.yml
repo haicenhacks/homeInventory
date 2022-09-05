@@ -7,12 +7,13 @@ services:
     command: >
       bash -c "python3 manage.py makemigrations && python3 manage.py migrate && python3 manage.py collectstatic --no-input && gunicorn home.wsgi:application --bind 0.0.0.0:8000 --workers=4"
     env_file:
-      - project.env
+      - ./project.env
     expose:
       - 8000
     volumes:
       - staticfiles:/home/app/web/staticfiles
       - mediafiles:/home/app/web/mediafiles
+      - sqlitedb:/home/app/web/home/db/
   nginxsq:
     container_name: nginx_homeInventorysq
     build: ./nginx
@@ -29,6 +30,7 @@ services:
 volumes:
   staticfiles:
   mediafiles:
+  sqlitedb:
 networks:
   default:
     external:
