@@ -1,4 +1,5 @@
-Status as of June 29, 2022: There are multiple issues. Migrations are not being correctly applied in the docker image. I do not currently have time to investigate. This was the first project I made with django, and I haven't really done much with it since. 
+## Update
+Status as of September 5, 2022: Due to some issues I was having with docker and/or postgres, this app now defaults to using sqlite3. 
 
 # Home Inventory
 ## About
